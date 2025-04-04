@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
+const mongoose = require('mongoose');
 
-const reportSchema = mongoose.Schema({
+const reportSchema = new mongoose.Schema({
   titulo: { type: String, required: true },
   conteudo: { type: String, required: true },
   peritoResponsavel: {
@@ -12,3 +12,5 @@ const reportSchema = mongoose.Schema({
 });
 
 const Report = mongoose.model("Report", reportSchema);
+
+module.exports = Report

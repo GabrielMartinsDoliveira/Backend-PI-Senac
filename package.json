@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Back-end do Projeto Integrador das disciplinas coding mobile e analise e projetos de sistemas",
   "main": "index.js",
+  "type": "commonjs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

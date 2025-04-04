@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
+const mongoose = require('mongoose');
 
-const evidenceSchema = mongoose.Schema({
+const evidenceSchema = new mongoose.Schema({
   case: { type: String, required: true},
   tipo: { type: String, required: true },
   descricao: {type: String, required: true},
@@ -12,4 +12,6 @@ const evidenceSchema = mongoose.Schema({
   },
 });
 
-export const Evidence = mongoose.model("Evidence", evidenceSchema);
+const Evidence = mongoose.model("Evidence", evidenceSchema);
+
+module.exports = Evidence

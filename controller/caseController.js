@@ -1,6 +1,6 @@
-import { Case } from "../models/case";
+const Case = require("../models/case");
 
-export const createCase = async (req, res) => {
+const createCase = async (req, res) => {
   try {
     const { titulo, descricao, status } = req.body;
     const newCase = new Case({ titulo, descricao, status });
@@ -11,24 +11,77 @@ export const createCase = async (req, res) => {
   }
 };
 
-// Possibilidade de criar outras funções para pesquisar utilizando filtros ou tratar no frontend
-export const getCases = async (req, res) => {
+// Verificar se o usuário só poderá ver os casos pelo que ele é responsável
+const getCases = async (req, res) => {
   try {
-    const cases = await Case.find();
+    const cases = await Case.find().populate("responsavel", "nome");
     res.status(200).json(cases);
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
 };
 
-// Atualizar o status do caso, considerando que ao mudar o status para finalizado ele irá receber a data/hora da atualização
-// Possibilidade: o usuário passar a data do fechamento - questionar o modelo de negócio
-export const updateStatusCase = async (req, res) => {
+const getCasesByUser = async (req, res) => {
+  try {
+    const { responsavel } = req.body;
+    const userCases = await Case.find({ responsavel }).populate(
+      "responsavel",
+      "nome"
+    );
+    if (!userCases) {
+      res
+        .status(400)
+        .json({ message: "Não foram encontrados casos com esse responsável" });
+    }
+    res.status(200).json(userCases);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
+
+const getCasesByStatus = async (req, res) => {
+  try {
+    const { status } = req.body;
+    const statusCases = await Case.find({ status }).populate(
+      "responsavel",
+      "nome"
+    );
+    if (!statusCases) {
+      res
+        .status(400)
+        .json({ message: "Não foram encontrados casos com esse status" });
+    }
+    res.status(200).json(statusCases);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
+
+const getCasesByDate = async (req, res) => {
+  try {
+    const { dataAbertura } = req.body;
+    const dateCases = await Case.find({ dataAbertura }).populate(
+      "responsavel",
+      "nome"
+    );
+    if (!dateCases) {
+      res
+        .status(400)
+        .json({ message: "Não foram encontrados casos com essa data de abertura" });
+    }
+    res.status(200).json(dateCases);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
+
+const updateStatusCase = async (req, res) => {
   try {
     const { id } = req.params.id;
     const { status } = req.body;
+
     if (status == "finalizado") {
-      const dataFechamento = Date.now;
+      const dataFechamento = Date.now();
       const updatedCase = await Case.findByIdAndUpdate(
         id,
         {
@@ -38,7 +91,7 @@ export const updateStatusCase = async (req, res) => {
         { new: true }
       );
       if (!updatedCase) {
-        return res.status(400).json({ message: "Usuário não encontrado" });
+        return res.status(400).json({ message: "Caso não encontrado" });
       }
       res.status(200).json(updatedCase);
     } else {
@@ -48,9 +101,20 @@ export const updateStatusCase = async (req, res) => {
         { new: true }
       );
       if (!updatedCase) {
-        return res.status(400).json({ message: "Usuário não encontrado" });
+        return res.status(400).json({ message: "Caso não encontrado" });
       }
       res.status(200).json(updatedCase);
     }
-  } catch (err) {}
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
+
+module.exports = {
+  createCase,
+  getCases,
+  getCasesByDate,
+  getCasesByStatus,
+  getCasesByUser,
+  updateStatusCase,
 };

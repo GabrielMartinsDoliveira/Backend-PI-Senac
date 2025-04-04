@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
+const mongoose = require('mongoose')
 
-const comparisonResultSchema = mongoose.Schema({
+const comparisonResultSchema = new mongoose.Schema({
   resultado: { type: String, required: true },
   precisao: { type: Float, required: true },
   analisadoPor: {
@@ -13,3 +13,5 @@ const comparisonResultSchema = mongoose.Schema({
 
 
 const ComparisonResult = mongoose.model('ComparisonResult', comparisonResultSchema)
+
+module.exports = ComparisonResult
