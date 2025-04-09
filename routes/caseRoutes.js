@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { createCase, getCases,updateStatusCase, getCasesByDate, getCasesByStatus, getCasesByUser } = require('../controllers/caseController');
+const { createCase, getCases,updateStatusCase, getCasesByDate, getCasesByStatus, getCasesByUser } = require('../controller/caseController');
 
 
 // Rotas de caso

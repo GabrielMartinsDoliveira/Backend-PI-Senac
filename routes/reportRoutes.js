@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const { createReport, getReports, getReportsByDate, getReportsByStatus, getReportsByUser } = require('../controllers/reportController');
+const { createReport, getReports, getReportById, updateReport, deleteReport, } = require('../controller/reportController');
 
 
 // Rotas de laudo
 router.post('/', createReport);
 router.get('/', getReports);
-router.get('/data', getReportsByDate);
-router.get('/status', getReportsByStatus);
-router.get('/responsavel', getReportsByUser);
+router.get('/:id', getReportById);
+router.put('/:id', updateReport);
+router.delete('/:id', deleteReport);
 
 module.exports = router;

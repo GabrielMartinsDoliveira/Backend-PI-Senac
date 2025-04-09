@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { createUser, getUsers, getUserById, login, updateUser, deleteUserById} = require('../controllers/caseController');
+const { createUser, getUsers, getUserById, login, updateUser, deleteUserById} = require('../controller/userController');
 
 
 // Rotas de usuários

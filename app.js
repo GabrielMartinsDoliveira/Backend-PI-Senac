@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(cors());
 
 // Conectando ao MongoDB
-mongoose.connect('mongodb://localhost:27017/<colocar database>', {
+mongoose.connect('mongodb://127.0.0.1:27017/forenseek', {
     useNewUrlParser: true,
     useUnifiedTopology: true
 }).then(() => {

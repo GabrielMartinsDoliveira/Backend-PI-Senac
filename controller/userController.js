@@ -4,7 +4,12 @@ const bcrypt = require("bcryptjs");
 const createUser = async (req, res) => {
   try {
     const { nome, email, senha, role } = req.body;
-    const user = new User({ nome, email, senha, role });
+    const senhaHash = await bcrypt.hash(senha, 10)
+
+    if(!senha) return res.status(400).json({ error: "Senha é obrigatória" })
+    if(!senhaHash) return res.status(400).json({ error: "Erro ao gerar o hash" })
+
+    const user = new User({ nome, email, senha: senhaHash, role });
     await user.save();
     res.status(201).json(user);
   } catch (error) {
@@ -87,5 +92,5 @@ module.exports = {
   getUserById,
   login,
   updateUser,
-  deleteUserById
+  deleteUserById,
 };

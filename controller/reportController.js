@@ -63,4 +63,4 @@ const deleteReport = async (req, res) => {
     }
 };
 
-module.exports = { createReport };
+module.exports = { createReport, getReports, getReportById, updateReport, deleteReport };
