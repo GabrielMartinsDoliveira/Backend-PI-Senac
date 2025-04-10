@@ -2,8 +2,8 @@ const Case = require("../models/case");
 
 const createCase = async (req, res) => {
   try {
-    const { titulo, descricao, status } = req.body;
-    const newCase = new Case({ titulo, descricao, status });
+    const { titulo, descricao, status, responsavel } = req.body;
+    const newCase = new Case({ titulo, descricao, status, responsavel });
     await newCase.save();
     res.status(201).json(newCase);
   } catch (err) {
@@ -16,6 +16,20 @@ const getCases = async (req, res) => {
   try {
     const cases = await Case.find().populate("responsavel", "nome");
     res.status(200).json(cases);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
+
+const getCaseById = async (req, res) => {
+  try {
+    const caseById = await Case.findById(req.params.id);
+    if (!caseById) {
+      res
+        .status(400)
+        .json({ message: "Não foi encontrado o caso com esse id" });
+    }
+    res.status(200).json(caseById);
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
@@ -65,9 +79,9 @@ const getCasesByDate = async (req, res) => {
       "nome"
     );
     if (!dateCases) {
-      res
-        .status(400)
-        .json({ message: "Não foram encontrados casos com essa data de abertura" });
+      res.status(400).json({
+        message: "Não foram encontrados casos com essa data de abertura",
+      });
     }
     res.status(200).json(dateCases);
   } catch (err) {
@@ -113,6 +127,7 @@ const updateStatusCase = async (req, res) => {
 module.exports = {
   createCase,
   getCases,
+  getCaseById,
   getCasesByDate,
   getCasesByStatus,
   getCasesByUser,

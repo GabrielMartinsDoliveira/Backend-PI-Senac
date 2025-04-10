@@ -4,16 +4,20 @@ const cors = require('cors');
 const caseRoutes = require('./routes/caseRoutes');
 const reportRoutes = require('./routes/reportRoutes');
 const userRoutes = require('./routes/userRoutes');
+require('dotenv').config()
 const app = express();
 const PORT = process.env.PORT || 3000;
+const MONGO_CONNECTION = process.env.MONGO_URL
+
+console.log(typeof(MONGO_CONNECTION))
 
 // Middleware para parse de JSON
 app.use(express.json());
 
-app.use(cors());
+app.use(cors({ origin: 'http://localhost:3001' }));
 
 // Conectando ao MongoDB
-mongoose.connect('mongodb://127.0.0.1:27017/forenseek', {
+mongoose.connect(MONGO_CONNECTION, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 }).then(() => {
