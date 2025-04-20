@@ -4,6 +4,7 @@ const cors = require('cors');
 const caseRoutes = require('./routes/caseRoutes');
 const reportRoutes = require('./routes/reportRoutes');
 const userRoutes = require('./routes/userRoutes');
+const authRoutes = require('./routes/authRoutes')
 require('dotenv').config()
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -27,6 +28,7 @@ mongoose.connect(MONGO_CONNECTION, {
 });
 
 // Usando rotas
+app.use('/api/auth', authRoutes)
 app.use('/api/case', caseRoutes);
 app.use('/api/report', reportRoutes);
 app.use('/api/user', userRoutes);

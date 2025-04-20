@@ -2,8 +2,14 @@ const Case = require("../models/case");
 
 const createCase = async (req, res) => {
   try {
-    const { titulo, descricao, status, responsavel } = req.body;
-    const newCase = new Case({ titulo, descricao, status, responsavel });
+    const { titulo, descricao, status, responsavel, dataOcorrencia } = req.body;
+    const newCase = new Case({
+      titulo,
+      descricao,
+      status,
+      responsavel,
+      dataOcorrencia,
+    });
     await newCase.save();
     res.status(201).json(newCase);
   } catch (err) {
@@ -23,7 +29,10 @@ const getCases = async (req, res) => {
 
 const getCaseById = async (req, res) => {
   try {
-    const caseById = await Case.findById(req.params.id);
+    const caseById = await Case.findById(req.params.id).populate(
+      "responsavel",
+      "nome"
+    );
     if (!caseById) {
       res
         .status(400)
@@ -92,14 +101,18 @@ const getCasesByDate = async (req, res) => {
 const updateStatusCase = async (req, res) => {
   try {
     const { id } = req.params.id;
-    const { status } = req.body;
+    const { titulo, status, descricao, dataOcorrencia, localidade } = req.body;
 
     if (status == "finalizado") {
       const dataFechamento = Date.now();
       const updatedCase = await Case.findByIdAndUpdate(
         id,
         {
+          titulo,
           status,
+          descricao,
+          dataOcorrencia,
+          localidade,
           dataFechamento,
         },
         { new: true }
@@ -111,7 +124,7 @@ const updateStatusCase = async (req, res) => {
     } else {
       const updatedCase = await Case.findByIdAndUpdate(
         id,
-        { status },
+        { titulo, status, descricao, localidade },
         { new: true }
       );
       if (!updatedCase) {

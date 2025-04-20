@@ -11,6 +11,11 @@ const caseSchema = new mongoose.Schema({
   },
   dataAbertura: { type: Date, default: Date.now, required: true },
   dataFechamento: { type: Date },
+  dataOcorrencia:{type: Date, required: true},
+  localidade:{
+    latitude: {type: Number},
+    longitude: {type: Number}
+  }
 });
 
 const Case = mongoose.model("Case", caseSchema);
