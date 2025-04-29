@@ -4,14 +4,27 @@ const { caseId } = require("../models/case");
 // Criar evidencia no caso
 const createEvidence = async (req, res) => {
   try {
-    const { idCaso, tipo, descricao, dataColeta, coletadoPor } = req.body;
+    const { idCaso, tipo, descricao, dataColeta, coletadoPor, localColeta } =
+      req.body;
+
+    const arquivos =
+      req.files?.map((file) => ({
+        filename: file.filename,
+        path: file.path,
+        mimetype: file.mimetype,
+        size: file.size,
+      })) || [];
+
     const newEvidence = new Evidence({
       idCaso,
       tipo,
       descricao,
       dataColeta,
       coletadoPor,
+      localColeta,
+      arquivos,
     });
+
     await newEvidence.save();
     res.status(201).json(newEvidence);
   } catch (err) {
@@ -22,7 +35,8 @@ const createEvidence = async (req, res) => {
 // Get todas as evidencias do caso
 const getEvidences = async (req, res) => {
   try {
-    const evidences = await Evidence.find(caseId).populate(
+    const { idCaso } = req.query;
+    const evidences = await Evidence.find({ idCaso }).populate(
       "coletadoPor",
       "nome"
     );
@@ -36,11 +50,11 @@ const getEvidences = async (req, res) => {
 
 const getEvidenceById = async (req, res) => {
   try {
-    const { id } = req.params.id;
-    const evidence = await Evidence.findById(id).populate(
+    const evidence = await Evidence.findById(req.params.id).populate(
       "coletadoPor",
       "nome"
     );
+    res.status(200).json(evidence);
   } catch (err) {
     res.status(400).json({ error: err.message });
   }

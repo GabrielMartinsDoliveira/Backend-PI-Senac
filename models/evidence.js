@@ -18,6 +18,14 @@ const evidenceSchema = new mongoose.Schema({
     latitude: { type: Number },
     longitude: { type: Number },
   },
+  arquivos: [
+    {
+      filename: { type: String, required: true }, 
+      path: { type: String, required: true },      
+      mimetype: { type: String },                  
+      size: { type: Number },                     
+    }
+  ]
 });
 
 const Evidence = mongoose.model("Evidence", evidenceSchema);

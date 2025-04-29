@@ -70,7 +70,7 @@ const getCasesByStatus = async (req, res) => {
       "nome"
     );
     if (!statusCases) {
-      res
+      return res
         .status(400)
         .json({ message: "Não foram encontrados casos com esse status" });
     }
@@ -88,7 +88,7 @@ const getCasesByDate = async (req, res) => {
       "nome"
     );
     if (!dateCases) {
-      res.status(400).json({
+      return res.status(400).json({
         message: "Não foram encontrados casos com essa data de abertura",
       });
     }
@@ -98,22 +98,31 @@ const getCasesByDate = async (req, res) => {
   }
 };
 
-const updateStatusCase = async (req, res) => {
+const updateCase = async (req, res) => {
   try {
-    const { id } = req.params.id;
-    const { titulo, status, descricao, dataOcorrencia, localidade } = req.body;
+    const id = req.params.id;
+    const {
+      titulo,
+      status,
+      descricao,
+      dataAbertura,
+      dataOcorrencia,
+      dataFechamento,
+      localidade,
+    } = req.body;
 
     if (status == "finalizado") {
-      const dataFechamento = Date.now();
+      const dataAtual = Date.now();
       const updatedCase = await Case.findByIdAndUpdate(
         id,
         {
           titulo,
           status,
           descricao,
+          dataAbertura,
           dataOcorrencia,
+          dataAtual,
           localidade,
-          dataFechamento,
         },
         { new: true }
       );
@@ -124,7 +133,15 @@ const updateStatusCase = async (req, res) => {
     } else {
       const updatedCase = await Case.findByIdAndUpdate(
         id,
-        { titulo, status, descricao, localidade },
+        {
+          titulo,
+          status,
+          descricao,
+          dataAbertura,
+          dataOcorrencia,
+          localidade,
+          dataFechamento,
+        },
         { new: true }
       );
       if (!updatedCase) {
@@ -137,6 +154,38 @@ const updateStatusCase = async (req, res) => {
   }
 };
 
+const deleteCaseById = async (req, res) => {
+  try {
+    const deletedCase = await Case.findByIdAndDelete(req.params.id);
+
+    if (!deletedCase) {
+      return res.status(404).json({
+        message: "Caso não encontrado com o ID fornecido",
+      });
+    }
+
+    res.status(200).json({
+      message: "Caso deletado com sucesso",
+      deletedCase: {
+        id: deletedCase._id,
+        titulo: deletedCase.titulo,
+        responsavel: deletedCase.responsavel,
+      },
+    });
+  } catch (err) {
+    if (err.name === "CastError") {
+      return res.status(400).json({
+        error: "ID do caso inválido",
+      });
+    }
+
+    res.status(500).json({
+      error: "Erro ao deletar caso",
+      details: err.message,
+    });
+  }
+};
+
 module.exports = {
   createCase,
   getCases,
@@ -144,5 +193,6 @@ module.exports = {
   getCasesByDate,
   getCasesByStatus,
   getCasesByUser,
-  updateStatusCase,
+  updateCase,
+  deleteCaseById,
 };

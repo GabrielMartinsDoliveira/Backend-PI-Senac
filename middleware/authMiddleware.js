@@ -20,7 +20,7 @@ const authMiddleware = async (req, res, next) => {
     }
 
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "6h",
+      expiresIn: "1h",
     });
 
     req.auth = {

@@ -5,6 +5,8 @@ const caseRoutes = require('./routes/caseRoutes');
 const reportRoutes = require('./routes/reportRoutes');
 const userRoutes = require('./routes/userRoutes');
 const authRoutes = require('./routes/authRoutes')
+const evidenceRoutes = require('./routes/evidenceRoutes')
+const laudoRoutes = require('./routes/laudoRoutes')
 require('dotenv').config()
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -15,7 +17,7 @@ console.log(typeof(MONGO_CONNECTION))
 // Middleware para parse de JSON
 app.use(express.json());
 
-app.use(cors({ origin: 'http://localhost:3001' }));
+app.use(cors({ origin: 'http://localhost:3000' }));
 
 // Conectando ao MongoDB
 mongoose.connect(MONGO_CONNECTION, {
@@ -28,10 +30,12 @@ mongoose.connect(MONGO_CONNECTION, {
 });
 
 // Usando rotas
-app.use('/api/auth', authRoutes)
+app.use('/api', authRoutes)
 app.use('/api/case', caseRoutes);
 app.use('/api/report', reportRoutes);
 app.use('/api/user', userRoutes);
+app.use('/api/evidence', evidenceRoutes)
+app.use('/api/laudo', laudoRoutes)
 
 app.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`);

@@ -35,12 +35,12 @@ const getUserById = async (req, res) => {
 
 const updateUser = async (req, res) => {
   try {
-    const { id } = req.params.id;
-    const { nome, email, matricula, senha, role } = req.body;
+    const  id = req.params.id;
+    const { senha } = req.body;
 
     const updatedUser = await User.findByIdAndUpdate(
       id,
-      { nome, email, matricula, senha, role },
+      { senha},
       { new: true }
     );
     if (!updatedUser)
