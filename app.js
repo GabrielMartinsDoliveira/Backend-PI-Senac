@@ -17,7 +17,7 @@ console.log(typeof(MONGO_CONNECTION))
 // Middleware para parse de JSON
 app.use(express.json());
 
-app.use(cors({ origin: 'http://localhost:3000' }));
+app.use(cors({ origin: 'https://forenseek.onrender.com' }));
 
 // Conectando ao MongoDB
 mongoose.connect(MONGO_CONNECTION, {
