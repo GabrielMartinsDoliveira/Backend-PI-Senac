@@ -7,6 +7,7 @@ const userRoutes = require('./routes/userRoutes');
 const authRoutes = require('./routes/authRoutes')
 const evidenceRoutes = require('./routes/evidenceRoutes')
 const laudoRoutes = require('./routes/laudoRoutes')
+const pacienteRoutes = require('./routes/pacientRoutes')
 require('dotenv').config()
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -36,6 +37,7 @@ app.use('/api/report', reportRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/evidence', evidenceRoutes)
 app.use('/api/laudo', laudoRoutes)
+app.use('/api/pacient', pacienteRoutes)
 
 app.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`);
