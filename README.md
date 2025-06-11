@@ -41,6 +41,7 @@ npm install
 npm run dev
 
 O servidor estará rodando em: "https://backend-forenseek.onrender.com/api"
+Confira a documentação da api em: "https://backend-forenseek.onrender.com/api-docs/#/"
 ```
 🔐 Funcionalidades Principais
 •	- Cadastro e autenticação de usuários (com bcrypt + JWT)
