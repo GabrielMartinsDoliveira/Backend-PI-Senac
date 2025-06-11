@@ -11,11 +11,16 @@ const caseSchema = new mongoose.Schema({
   },
   dataAbertura: { type: Date, default: Date.now, required: true },
   dataFechamento: { type: Date },
-  dataOcorrencia:{type: Date, required: true},
-  localidade:{
-    latitude: {type: Number},
-    longitude: {type: Number}
-  }
+  dataOcorrencia: { type: Date, required: true },
+  localidade: {
+    latitude: { type: Number },
+    longitude: { type: Number },
+  },
+  vitima: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Pacient",
+    required: true,
+  },
 });
 
 const Case = mongoose.model("Case", caseSchema);
