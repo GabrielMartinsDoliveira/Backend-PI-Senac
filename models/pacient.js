@@ -15,6 +15,7 @@ const pacientSchema = new moongoose.Schema({
   etnia: { type: String },
   odontograma: { type: String },
   regiaoAnatomicas: { type: String },
+  dataCadastro: { type: Date, default: Date.now, required: true },
 });
 
 const Pacient = moongoose.model("Pacient", pacientSchema);
