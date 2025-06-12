@@ -2,13 +2,14 @@ const Case = require("../models/case");
 
 const createCase = async (req, res) => {
   try {
-    const { titulo, descricao, status, responsavel, dataOcorrencia } = req.body;
+    const { titulo, descricao, status, responsavel, dataOcorrencia, vitima } = req.body;
     const newCase = new Case({
       titulo,
       descricao,
       status,
       responsavel,
       dataOcorrencia,
+      vitima
     });
     await newCase.save();
     res.status(201).json(newCase);
@@ -109,6 +110,7 @@ const updateCase = async (req, res) => {
       dataOcorrencia,
       dataFechamento,
       localidade,
+      vitima
     } = req.body;
 
     if (status == "finalizado") {
@@ -123,6 +125,7 @@ const updateCase = async (req, res) => {
           dataOcorrencia,
           dataAtual,
           localidade,
+          vitima
         },
         { new: true }
       );
@@ -141,6 +144,7 @@ const updateCase = async (req, res) => {
           dataOcorrencia,
           localidade,
           dataFechamento,
+          vitima
         },
         { new: true }
       );
